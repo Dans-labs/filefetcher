@@ -33,14 +33,15 @@ def load_adaptors():
 
 # Automatically load adaptors on import
 (adaptors, adaptor_priority_list) = load_adaptors()
+file_record_schema = None
 
 # Load JSON Schema
 with open(SCHEMA_FILE, "r") as f:
-    schema = json.load(f)
+    file_record_schema = json.load(f)
 
 def validate_file_record(file_record: dict) -> bool:
     try:
-        jsonschema.validate(instance=file_record, schema=schema, format_checker=FormatChecker())
+        jsonschema.validate(instance=file_record, schema=file_record_schema, format_checker=FormatChecker())
         return True
     except jsonschema.ValidationError as e:
         logger.error(f"File record validation error: {e.message}")
@@ -53,9 +54,6 @@ async def fetch_file_info(pid: str) -> dict:
         metadata = await asyncio.to_thread(m.files, pid)
         if metadata:
             break
-    for record in metadata:
-        if not validate_file_record(record):
-            logger.warning(f"Invalid file record from adaptor {adaptor_name}: {record}")
     return metadata
 
 async def fetch_raw_file_info(pid: str) -> dict:

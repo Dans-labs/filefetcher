@@ -34,3 +34,14 @@ def file_mime_types(pid: str):
         set: A set of unique file mime types.
     """
     return asyncio.run(core.fetch_file_mime_types(pid))
+
+def validate_file_record(file_record: dict):
+    """Validate a file record against the JSON schema.
+
+    Args:
+        file_record (dict): The file record to validate.
+
+    Returns:
+        bool: True if valid, False otherwise.
+    """
+    return core.validate_file_record(file_record)
