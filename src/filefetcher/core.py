@@ -2,6 +2,7 @@ import asyncio
 import logging
 import importlib
 import pkgutil
+import mimetypes
 import json
 import jsonschema
 from jsonschema import FormatChecker
@@ -76,5 +77,14 @@ async def fetch_file_mime_types(pid:str) -> list:
 
 async def fetch_file_extensions(pid:str) -> list:
     files = await fetch_file_info(pid)
-    extensions = list({Path(r['name']).suffix for r in files})
-    return extensions
+    extensions = {Path(r['name']).suffix.lower() for r in files}
+    # Handle files without extensions
+    # by guessing from mime type
+    records_without_extension = [r for r in files if not Path(r['name']).suffix]
+    for r in records_without_extension:
+        mime_type = r.get('mime_type')
+        if mime_type and (ext := mimetypes.guess_extension(mime_type)):
+                extensions.add(ext.lower())
+    # Remove empty string if present
+    extensions.discard('')  
+    return list(extensions)
