@@ -17,3 +17,25 @@ files = ff.file_records(DOI)
 file_extensions = ff.file_extensions(DOI)
 file_mimetypes = ff.file_mime_types(DOI)
 ```
+
+## File record schema
+
+`file_records` return a list of files following this schema:
+
+```json
+[
+  {
+    "name": "example.txt",
+    "link": "https://example.com/example.txt",
+    "size": 1024,
+    "mim_type": "text/plain",
+    "checksum_value": "abc123",
+    "checksum_type": "md5",
+    "access_request": False,
+    "publication_date": "Some non standard date string",
+    "embargo": "Some non standard date string or None",
+    "file_pid": "unique-file-identifier, which is null most of the time",
+    "dataset_pid": "parent dataset identifier"
+  }
+]
+```
