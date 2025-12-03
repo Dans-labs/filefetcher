@@ -2,12 +2,17 @@ import asyncio
 import logging
 import importlib
 import pkgutil
+import json
+import jsonschema
+from jsonschema import FormatChecker
+
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
 
 ADAPTOR_FOLDER = Path(__file__).parent / "adaptors"
+SCHEMA_FILE = Path(__file__).parent / "file_record.schema.json"
 
 def load_adaptors():
     """Dynamically load all adaptors in the adaptors folder."""
@@ -29,6 +34,18 @@ def load_adaptors():
 # Automatically load adaptors on import
 (adaptors, adaptor_priority_list) = load_adaptors()
 
+# Load JSON Schema
+with open(SCHEMA_FILE, "r") as f:
+    schema = json.load(f)
+
+def validate_file_record(file_record: dict) -> bool:
+    try:
+        jsonschema.validate(instance=file_record, schema=schema, format_checker=FormatChecker())
+        return True
+    except jsonschema.ValidationError as e:
+        logger.error(f"File record validation error: {e.message}")
+        return False
+
 async def fetch_file_info(pid: str) -> dict:
     metadata = []
     for adaptor_name in adaptor_priority_list:
@@ -36,6 +53,9 @@ async def fetch_file_info(pid: str) -> dict:
         metadata = await asyncio.to_thread(m.files, pid)
         if metadata:
             break
+    for record in metadata:
+        if not validate_file_record(record):
+            logger.warning(f"Invalid file record from adaptor {adaptor_name}: {record}")
     return metadata
 
 async def fetch_raw_file_info(pid: str) -> dict:

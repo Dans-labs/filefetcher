@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FileRecord",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "link": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri"
+    },
+    "size": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "mime_type": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "checksum_value": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "checksum_type": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "access_request": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "publication_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "embargo": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "file_pid": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "dataset_pid": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "name",
+    "link",
+    "dataset_pid"
+  ]
+}
