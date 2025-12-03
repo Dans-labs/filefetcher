@@ -1,0 +1,7 @@
+cff-version: 1.2.0
+title: filefetcher
+message: "Please cite this library if you use it."
+authors:
+  - family-names: Cushing
+    given-names: Reggie
+version: 0.1.0

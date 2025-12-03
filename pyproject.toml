@@ -1,0 +1,18 @@
+[project]
+name = "filefetcher"
+version = "0.1.0"
+description = "A utility that file metadata for given PID, DOI, or URL."
+authors = [{ name = "Author", email = "reggie.cushing@dans.knaw.nl" }]
+license = { file = "LICENSE" }
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "datahugger",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv.sources]
+datahugger = { git = "https://github.com/Dans-labs/datahugger.git" }
