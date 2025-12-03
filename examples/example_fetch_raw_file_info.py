@@ -1,4 +1,3 @@
-# examples/example_usage.py
 import asyncio
 from filefetcher import core
 

@@ -1,4 +1,3 @@
-# examples/example_usage.py
 from filefetcher import api as ff
 
 PIDS = ["10.17026/DANS-XGB-TW5U", "http://hdl.handle.net/21.T15999/01BYJvzYl"]
