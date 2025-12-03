@@ -50,3 +50,13 @@ async def fetch_raw_file_info(pid: str) -> dict:
             "adaptor": adaptor_name,
             "files": raw_metadata
     }
+
+async def fetch_file_mime_types(pid:str) -> list:
+    files = await fetch_file_info(pid)
+    unique_types = list({r['mime_type'] for r in files})
+    return unique_types
+
+async def fetch_file_extensions(pid:str) -> list:
+    files = await fetch_file_info(pid)
+    extensions = list({Path(r['name']).suffix for r in files})
+    return extensions
