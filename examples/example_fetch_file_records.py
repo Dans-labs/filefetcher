@@ -1,13 +1,13 @@
 # examples/example_usage.py
 import asyncio
-from filefetcher import api
+from filefetcher import api as ff
 
 PIDS = ["10.17026/DANS-XGB-TW5U", "http://hdl.handle.net/21.T15999/01BYJvzYl"]
 
-async def main():
+def main():
     try:
         for pid in PIDS:
-            file_list = await api.file_records(pid)
+            file_list = ff.file_records(pid)
             print(f"Fetched file list for PID {pid}:")
             print(file_list)
             print("-" * 40)
@@ -15,5 +15,5 @@ async def main():
         print(f"An error occurred: {e}")
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
 
