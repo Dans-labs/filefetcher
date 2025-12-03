@@ -244,7 +244,7 @@ def call_rest_api(
         else:
             details = ""
 
-        logger.warning(f"{details}Failed HTTP request for URL: {url}\n"
+        logger.debug(f"{details}Failed HTTP request for URL: {url}\n"
                     f"> Reponse body: {response.text if response.text else "<empty>"}\n"
         )
 
@@ -269,7 +269,7 @@ def identifier_to_url(identifier: str):
     if re.compile(r"^10\.\d{4,9}/[-._;()/:A-Z0-9]+$", re.IGNORECASE).match(identifier):
         return f"{DOI_RESOLVER_ADDRESS}/{identifier}"
     
-    logger.warning(f"The identifier does not seem to be either a DOI or a URL: {identifier}")
+    logger.debug(f"The identifier does not seem to be either a DOI or a URL: {identifier}")
     return None
 
 
@@ -277,13 +277,13 @@ def peek_redirect(url: str):
     try:
         response = requests.head(url, allow_redirects=False, timeout=REQUEST_TIMEOUT)
     except ConnectionError:
-        logger.warning(f"cannot resolve a redirection for url: {url}\n> Reason: connection error (host unreachable or DNS failure)")
+        logger.debug(f"cannot resolve a redirection for url: {url}\n> Reason: connection error (host unreachable or DNS failure)")
         return None
     except Timeout:
-        logger.warning(f"cannot resolve a redirection for url: {url}\n> Reason: request timed out after {REQUEST_TIMEOUT}s")
+        logger.debug(f"cannot resolve a redirection for url: {url}\n> Reason: request timed out after {REQUEST_TIMEOUT}s")
         return None
     except RequestException as e:
-        logger.warning(f"cannot resolve a redirection for url: {url}\n> Reason: request failed ({type(e).__name__}: {e})")
+        logger.debug(f"cannot resolve a redirection for url: {url}\n> Reason: request failed ({type(e).__name__}: {e})")
         return None
     
     if 300 <= response.status_code < 400:
@@ -291,10 +291,10 @@ def peek_redirect(url: str):
         if redirect_url:
             return redirect_url
         else:
-            logger.warning(f"cannot resolve a redirection for url: {url}\n> Reason: redirect response ({response.status_code}) without Location header")
+            logger.debug(f"cannot resolve a redirection for url: {url}\n> Reason: redirect response ({response.status_code}) without Location header")
             return None
 
-    logger.warning(f"cannot resolve a redirection for url: {url}\n> Reason: received a non-redirection HTTP code {response.status_code}")
+    logger.debug(f"cannot resolve a redirection for url: {url}\n> Reason: received a non-redirection HTTP code {response.status_code}")
     return None
 
 
