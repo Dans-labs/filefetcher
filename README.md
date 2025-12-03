@@ -28,7 +28,7 @@ file_mimetypes = ff.file_mime_types(DOI)
     "name": "example.txt",
     "link": "https://example.com/example.txt",
     "size": 1024,
-    "mim_type": "text/plain",
+    "mime_type": "text/plain",
     "checksum_value": "abc123",
     "checksum_type": "md5",
     "access_request": False,
