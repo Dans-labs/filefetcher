@@ -13,9 +13,18 @@ uv add https://github.com/Dans-labs/filefetcher.git
 ```python
 import filefetcher as ff
 DOI = "10.5072/FK2/ABCDE"
+# Get file records
+# [ {file_record}, ... ]
 files = ff.file_records(DOI)
+# Get just the file extensions
+# [".txt", ".pdf", ...]
 file_extensions = ff.file_extensions(DOI)
+# Get just the file mime types
+# ["text/plain", "application/pdf", ...]
 file_mimetypes = ff.file_mime_types(DOI)
+# Get file names and their types
+# [("example.txt", "text/plain"), ...]
+file_name_and_types = ff.file_name_and_types(DOI)
 ```
 
 ## File record schema

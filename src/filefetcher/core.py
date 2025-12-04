@@ -70,6 +70,11 @@ async def fetch_raw_file_info(pid: str) -> dict:
             "files": raw_metadata
     }
 
+async def fetch_file_name_and_type(pid:str) -> list:
+    files = await fetch_file_info(pid)
+    name_and_type = [(r['name'], r['mime_type']) for r in files]
+    return name_and_type
+
 async def fetch_file_mime_types(pid:str) -> list:
     files = await fetch_file_info(pid)
     unique_types = list({r['mime_type'] for r in files})
