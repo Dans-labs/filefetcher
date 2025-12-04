@@ -48,3 +48,9 @@ file_name_and_types = ff.file_name_and_types(DOI)
   }
 ]
 ```
+
+## Adding new source through adaptors
+
+To add a new source, create a new adaptor file in `src/filefetcher/adaptors/` following the structure of existing adaptors. Each adaptor should implement the necessary methods to fetch file records from the specific source.
+Check `src/filefetcher/adaptors/datahugger.py` for an example. Two main methods need to be implemented `info(doi: str)` that gets the raw metadata from the source and `files(doi: str)`
+that processes the raw metadata and returns the list of file records following the schema above.
