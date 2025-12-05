@@ -25,6 +25,9 @@ file_mimetypes = ff.file_mime_types(DOI)
 # Get file names and their types
 # [("example.txt", "text/plain"), ...]
 file_name_and_types = ff.file_name_and_types(DOI)
+# Get raw file metadata from the source
+# { "files": [ {source dependent file metadata}, ... ] }
+raw_file_metadata = ff.file_raw_records(DOI)
 ```
 
 ## File record schema

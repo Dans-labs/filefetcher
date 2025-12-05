@@ -13,6 +13,17 @@ def file_records(pid: str):
     """
     return asyncio.run(core.fetch_file_info(pid))
 
+def file_raw_records(pid: str):
+    """Fetch raw unharmonized file information by its pid.
+
+    Args:
+        pid (str): The pid of the file.
+
+    Returns:
+        dict: A dictionary containing raw file information.
+    """
+    return asyncio.run(core.fetch_raw_file_info(pid))
+
 def file_extensions(pid: str):
     """Fetch file extensions by its pid.
 

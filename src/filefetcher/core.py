@@ -48,7 +48,7 @@ def validate_file_record(file_record: dict) -> bool:
         logger.error(f"File record validation error: {e.message}")
         return False
 
-async def fetch_file_info(pid: str) -> dict:
+async def fetch_file_info(pid: str) -> list:
     metadata = []
     for adaptor_name in adaptor_priority_list:
         m = adaptors[adaptor_name]
@@ -66,7 +66,6 @@ async def fetch_raw_file_info(pid: str) -> dict:
             raw_metadata = metadata.files
             break
     return {
-            "adaptor": adaptor_name,
             "files": raw_metadata
     }
 
