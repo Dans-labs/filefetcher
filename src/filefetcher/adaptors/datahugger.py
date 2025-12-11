@@ -12,12 +12,8 @@ def test():
 
 @lru_cache(maxsize=128)
 def info(identifier: str):
-    try:
-        metadata = datahugger.info(identifier, {"type": "file"})
-        return metadata
-    except Exception as e:
-        logger.debug(f"Datahugger adaptor failed for identifier {identifier}: {e}.")
-        return None
+    metadata = datahugger.info(identifier, {"type": "file"})
+    return metadata
 
 def files(identifier: str):
     file_records = []
