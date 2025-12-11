@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 ADAPTOR_FOLDER = Path(__file__).parent / "adaptors"
 SCHEMA_FILE = Path(__file__).parent / "file_record.schema.json"
 
-class RepositoryNotFound(Exception):
+class RepositoryNotSupported(Exception):
     pass
 
 def load_adaptors():
@@ -66,17 +66,26 @@ async def fetch_file_info(pid: str) -> list:
 
     if len(errors) == len(adaptor_priority_list):
         error_messages = "; ".join([f"{name}: {msg}" for name, msg in errors])
-        raise RepositoryNotFound(f"All adaptors failed for PID {pid}. Errors: {error_messages}")
+        raise RepositoryNotSupported(f"All adaptors failed for PID {pid}. Errors: {error_messages}")
     return metadata
 
 async def fetch_raw_file_info(pid: str) -> dict:
     raw_metadata = None
+    errors = []
     for adaptor_name in adaptor_priority_list:
         m = adaptors[adaptor_name]
-        metadata = await asyncio.to_thread(m.info, pid)
-        if metadata:
-            raw_metadata = metadata.files
-            break
+        try:
+            metadata = await asyncio.to_thread(m.info, pid)
+            if metadata:
+                raw_metadata = metadata.files
+                break
+        except Exception as e:
+            errors.append((adaptor_name, str(e)))
+            continue
+
+    if len(errors) == len(adaptor_priority_list):
+        error_messages = "; ".join([f"{name}: {msg}" for name, msg in errors])
+        raise RepositoryNotSupported(f"All adaptors failed for PID {pid}. Errors: {error_messages}")
     return {
             "files": raw_metadata
     }
