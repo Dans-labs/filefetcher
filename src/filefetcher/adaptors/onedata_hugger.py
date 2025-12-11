@@ -30,18 +30,13 @@ def test():
 
 @lru_cache(maxsize=128)
 def info(identifier: str):
-    try:
-        logger.debug(f"Attempting to resolve an identifier as a Onedata dataset: {identifier}")
-        metadata = info_unsafe(identifier, MAX_REDIRECTS)
-        if not metadata:
-            return None
-        count = len(metadata.get("files"))
-        logger.debug(f"Successfully resolved a Onedata dataset - {count} file(s): {identifier}")
-        return SimpleNamespace(**metadata)
-    except Exception as e:
-        tb = traceback.format_exc()
-        logger.debug(f"Error fetching Onedata dataset metadata: {e}\n{tb}")
-        return None
+    logger.debug(f"Attempting to resolve an identifier as a Onedata dataset: {identifier}")
+    metadata = info_unsafe(identifier, MAX_REDIRECTS)
+    if metadata is False:
+        raise Exception("Reached a non-redirecting URL that is not a Onedata share link.")
+    count = len(metadata.get("files"))
+    logger.debug(f"Successfully resolved a Onedata dataset - {count} file(s): {identifier}")
+    return SimpleNamespace(**metadata)
 
 def files(identifier: str):
     file_records = []
