@@ -32,15 +32,13 @@ def _get_checksum(obj: dict):
     return checksum_info, None
 
 def files(identifier: str):
-    print("here")
     file_records = []
     metadata = info(identifier)
     if not metadata:
         return []
     files = metadata.files
     for file in files:
-        print("there", file)
-        logger.info(f"Processing file: {file.get('name')}")
+        logger.debug(f"Processing file: {file.get('name')}")
         record = {}
         record['name'] = file.get('name')
         record['link'] = file.get('link')
