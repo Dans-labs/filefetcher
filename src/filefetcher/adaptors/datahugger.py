@@ -1,5 +1,6 @@
 import datahugger
 import logging
+from filefetcher.core import RepositoryNotSupported
 from functools import lru_cache
 
 logger = logging.getLogger(__name__)
@@ -12,8 +13,11 @@ def test():
 
 @lru_cache(maxsize=128)
 def info(identifier: str):
-    metadata = datahugger.info(identifier, {"type": "file"})
-    return metadata
+    try:
+        metadata = datahugger.info(identifier, {"type": "file"})
+        return metadata
+    except datahugger.RepositoryNotSupportedError as e:
+        raise RepositoryNotSupported(e)
 
 def _get_checksum(obj: dict):
     checksum_info = obj.get('raw_metadata', {}).get('checksum', {})

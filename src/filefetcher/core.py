@@ -60,7 +60,7 @@ async def fetch_file_info(pid: str) -> list:
             metadata = await asyncio.to_thread(m.files, pid)
             if metadata:
                 break
-        except Exception as e:
+        except RepositoryNotSupported as e:
             errors.append((adaptor_name, str(e)))
             continue
 
@@ -79,7 +79,7 @@ async def fetch_raw_file_info(pid: str) -> dict:
             if metadata:
                 raw_metadata = metadata.files
                 break
-        except Exception as e:
+        except RepositoryNotSupported as e:
             errors.append((adaptor_name, str(e)))
             continue
 
