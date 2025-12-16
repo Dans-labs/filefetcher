@@ -14,6 +14,7 @@ from requests.exceptions import (
 )
 from types import SimpleNamespace
 from urllib.parse import urlparse
+from filefetcher.core import RepositoryNotSupported
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +34,7 @@ def info(identifier: str):
     logger.debug(f"Attempting to resolve an identifier as a Onedata dataset: {identifier}")
     metadata = info_unsafe(identifier, MAX_REDIRECTS)
     if metadata is False:
-        raise Exception("Reached a non-redirecting URL that is not a Onedata share link.")
+        raise RepositoryNotSupported("Reached a non-redirecting URL that is not a Onedata share link.")
     count = len(metadata.get("files"))
     logger.debug(f"Successfully resolved a Onedata dataset - {count} file(s): {identifier}")
     return SimpleNamespace(**metadata)
