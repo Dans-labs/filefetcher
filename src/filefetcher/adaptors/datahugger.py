@@ -49,7 +49,11 @@ def files(identifier: str):
         record['checksum_type'] = checksum_type
         record['access_request'] = file.get('raw_metadata', {}).get('fileAccessRequest')
         record['publication_date'] = file.get('raw_metadata', {}).get('publicationDate')
-        record['embargo'] = file.get('raw_metadata', {}).get('embargo', {}).get('dateAvailable')
+        embargo = file.get('raw_metadata', {}).get('embargo', {})
+        if isinstance(embargo, dict):
+            record['embargo'] = file.get('raw_metadata', {}).get('embargo', {}).get('dateAvailable')
+        else:
+            record['embargo'] = embargo
         record['file_pid'] = None
         record['dataset_pid'] = identifier
         file_records.append(record)
