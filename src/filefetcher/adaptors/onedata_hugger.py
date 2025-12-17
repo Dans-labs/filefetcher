@@ -15,6 +15,7 @@ from requests.exceptions import (
 from types import SimpleNamespace
 from urllib.parse import urlparse
 from filefetcher.core import RepositoryNotSupported
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
@@ -51,6 +52,7 @@ def files(identifier: str):
         record['link'] = file.get('link')
         record['size'] = file.get('size')
         record['mime_type'] = mimetypes.guess_type(file.get('name'))[0]
+        record['ext'] = Path(record['name']).suffix.lower()
         record['checksum_value'] = file.get('hash')
         record['checksum_type'] = file.get('hash_type')
         record['access_request'] = None

@@ -28,6 +28,12 @@
         "null"
       ]
     },
+    "ext": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "checksum_value": {
       "type": [
         "string",
