@@ -2,6 +2,7 @@ import datahugger
 import logging
 from filefetcher.core import RepositoryNotSupported
 from functools import lru_cache
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
@@ -43,11 +44,14 @@ def files(identifier: str):
     files = metadata.files
     for file in files:
         logger.debug(f"Processing file: {file.get('name')}")
+        if 'raw_metadata' not in file:
+            logger.warning(f"File {file.get('name')} is missing raw_metadata.")
         record = {}
         record['name'] = file.get('name')
         record['link'] = file.get('link')
         record['size'] = file.get('size')
         record['mime_type'] = file.get('raw_metadata', {}).get('contentType')
+        record['ext'] = Path(record['name']).suffix.lower()
         checksum_value, checksum_type = _get_checksum(file)
         record['checksum_value'] = checksum_value
         record['checksum_type'] = checksum_type
